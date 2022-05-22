@@ -1,3 +1,7 @@
+<!-- generative trance patch
+   melodicer cycles through short arpeggios matched with
+   lead improvisation on the lapsus os, played on the qubit chord v2.
+-->
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN"> <html> <head>
 <title></title> </head>
 
@@ -7,65 +11,88 @@ src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
     mermaid.initialize({ startOnLoad: true });
 </script>
 
-<h1></h1>
+<h3>Generative 'Trance Arpeggio' Patch Diagram</h3>
 
-Generative 'Trance Arpeggio' Patch Diagram
 <div class="mermaid">
   graph TD
+  %% master clock
   A(PNW - as Master Clock) -- x1 --> C(Horologic Solum - as Divider)
-  A(PNW - as Master Clock) -- x2 --> B(Muxlicer - as Trigger Seq)
+  A(PNW - as Master Clock) -- x2 --> B(Muxlicer - as Trigger Sequencer)
   A(PNW - as Master Clock) -- x2 --> D(Cara - as Modulator)
   A(PNW - as Master Clock) -- /3 --> E(Mimeophon - as Echo)
-  A(PNW - as Master Clock) -- /16 -> cv1 in --> F(Melodicer)
+  A(PNW - as Master Clock) -- /16 -> cv1 in --> F(Melodicer - as Generative Arpeggiator)
 
-  B(Muxlicer - as Trigger Seq) --> B1(Mex 1)
-  B(Muxlicer - as Trigger Seq) --> B2(Mex 2)
-  
+  %% trigger sequencer
+  B(Muxlicer - as Trigger Sequencer) --> B1(Mex 1)
+  B(Muxlicer - as Trigger Sequencer) --> B2(Mex 2)
   B1(Mex 1) --> I(BIA - kick)
   B2(Mex 2) --> J(Faselunare Vega - as hat)
 
-  C(Horologic Solum - as Divider) -- /1 -> clk --> F(Melodicer)
-  C(Horologic Solum - as Divider) -- /16 -> gate1/2 --> F(Melodicer)
+  %% slave clock
+  C(Horologic Solum - as Divider) -- /1 -> clk --> F(Melodicer - as Generative Arpeggiator)
+  C(Horologic Solum - as Divider) -- /16 -> gate1/2 --> F(Melodicer - as Generative Arpeggiator)
 
+  %% modulation
   D(Cara - as Modulator) -- t1,t3 -> !! --> M(QPAS - as Filter)
   D(Cara - as Modulator) -- x2 -> cutoff --> N(Popple - as Filter)
-  
-  F(Melodicer) -- trig --> G(Maths - as Env)
-  F(Melodicer) -- v/oct --> H(Chord v2 - as Voices)
 
-  G(Maths as Env) --> O(VCA)
-  
-  H(Chord v2 - as Voices) -- third --> O(VCA)
+  %% arpeggio
+  F(Melodicer - as Generative Arpeggiator) -- trig --> G(Maths - as Env)
+  F(Melodicer - as Generative Arpeggiator) -- v/oct --> H(Chord v2 - as Voices)
+
+  %% envelope
+  G(Maths - as Env) --> O(Blend - as VCA)
+
+  %% main oscillator
+  H(Chord v2 - as Voices) -- third --> O(Blend - as VCA)
   H(Chord v2 - as Voices) -- seventh --> N(Popple - as Filter)
-  
-  I(BIA - as kick) --> K(Mini Mixer)  
-  J(Faselunare Vega - as hat) --> K(Mini Mixer)
-  K(Mini Mixer) -- in2 --> P(Mixology)
 
+  %% percussion
+  I(BIA - as Kick) --> K(A138n - as Mixer)  
+  J(Faselunare Vega - as Hat) --> K(A138n - as Mixer)
+  K(A138n - as Mixer) -- in2 --> P(Mixology - as Main Mixer)
+
+  %% slow oscillations of the filter
   L(Tides v2 - as LFO) -- radiate L --> M(QPAS - as Filter)
   L(Tides v2 - as LFO) -- freq 1 --> M(QPAS - as Filter)
   L(Tides v2 - as LFO) -- radiate R --> M(QPAS - as Filter)
 
-  N(Popple - as Filter) -- L-Lp2 -> in1 --> P(Mixology)
+  %% second stage filter
+  N(Popple - as Filter) -- L-Lp2 -> in1 --> P(Mixology - as Main Mixer)
+  O(Blend - as VCA) -- in3 --> P(Mixology - as Main Mixer)
 
-  O(VCA) -- in3 --> P(Mixology)
-  
+  %% control surface
   Q(Lapsus Os - as Control) -- out 1 -> lead in --> H(Chord v2 - as Voices)
   Q(Lapsus Os - as Control) -- out 3 -> linear fm in --> H(Chord v2 - as Voices)
 
+  %% fm modulation of the qubit chord
   R(Ataraxic Iteritas) -- out -> in 3 --> Q(Lapsus Os - as Control)
 
-  P(Mixology) -- send --> Z(Buddy)
-  Z(Bastl Buddy - as Pre-out) --> R(Morphagene)
-  R(Morphagene) --> M(QPAS - as Filter)
+  %% output chain
+  P(Mixology - as Main Mixer) -- send --> Z(Buddy)
+  Z(Bastl Buddy - as Pre-out) --> R(Morphagene - as Splicer)
+  R(Morphagene - as Splicer) --> M(QPAS - as Filter)
   M(QPAS - as Filter) -- LP --> E(Mimeophon - as Echo)
   E(Mimeophon - as Echo) --> S(Desmodus Versio - as Reverb)
-  S(Desmodus Version - as Reverb) -- return --> P(Mixology)
-  P(Mixology) -- out --> T(MSCL)
+  S(Desmodus Version - as Reverb) -- return --> P(Mixology - as Main Mixer)
+  P(Mixology - as Main Mixer) -- out --> T(MSCL)
   T(MSCL - as Compressor) ---> U(XOH - as Master Out)
   U(XOH - as Master Out) --> V((Audio))
-  
+
 </div>
+
+
+Performance Notes
+<ul>
+  <li>master clock rate is ~120</li>
+  <li>Tides is in LFO mode producing bipolar oscillations <1Hz</li>
+  <li>Lapsus fader 1 controls the frequency of the lead voice</li>
+  <li>Lapsus fader 3 distorts the VCO output</li>
+  <li>Melodicer Gates 1 and 2 are configured to reset rhythm and melody</li>
+  <li>Melodicer CV1 is ~0-1.5V and controls the note range ceiling</li>
+  <li>Morphagene adds grains and texture and is optional</li>
+</ul>
+
 
 </body>
 </html>
