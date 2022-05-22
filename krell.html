@@ -1,0 +1,37 @@
+<!-- basic krell patch
+  via http://manual-synthesis.info/2017/01/26/krell/
+  ...inspired the use of 'mermaid' markup to describe/visualize
+     eurorack compositions.
+-->
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<script
+src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+    mermaid.initialize({ startOnLoad: true });
+</script>
+
+<h1></h1>
+
+Krell Diagram
+<div class="mermaid">
+  graph TD
+  A(Main envelope) -->B(Main VCA)
+  A(Main envelope) -->|EOC gate|J(Random 1V/oct)
+  A(Main envelope) -->|EOC gate|K(Random FM modulation)
+  I(VCO)-->B(Main VCA)
+  J(Random 1V/oct)-->I(VCO)
+  K(Random FM modulation)-->I(VCO)
+  E(Random attack modulation)-->A(Main envelope)
+  F(Random decay modulation)-->A(Main envelope)
+  B(Main VCA)-->D(Bandpass filter)
+  G(Random filter modulation)-->D(Bandpass filter)
+  D(Bandpass filter)-->H(Main out)
+</div>
+
+</body>
+</html>
